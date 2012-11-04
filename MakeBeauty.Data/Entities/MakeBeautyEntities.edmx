@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MakeBeautyModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="MakeBeautyModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="MakeBeautyModel.Store.Comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="HairStyle" EntityType="MakeBeautyModel.Store.HairStyle" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="HairStyle_BigImage" EntityType="MakeBeautyModel.Store.HairStyle_BigImage" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="HairStyle_Comment" EntityType="MakeBeautyModel.Store.HairStyle_Comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Task" EntityType="MakeBeautyModel.Store.Task" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Comment" Association="MakeBeautyModel.Store.FK_Comment">
+            <End Role="Comment" EntitySet="Comment" />
+            <End Role="HairStyle_Comment" EntitySet="HairStyle_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HairStyle" Association="MakeBeautyModel.Store.FK_HairStyle">
+            <End Role="HairStyle" EntitySet="HairStyle" />
+            <End Role="HairStyle_Comment" EntitySet="HairStyle_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HairStyle_BigImage" Association="MakeBeautyModel.Store.FK_HairStyle_BigImage">
+            <End Role="HairStyle" EntitySet="HairStyle" />
+            <End Role="HairStyle_BigImage" EntitySet="HairStyle_BigImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HairStyle_Task" Association="MakeBeautyModel.Store.FK_HairStyle_Task">
+            <End Role="HairStyle" EntitySet="HairStyle" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="author" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="message" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HairStyle">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="description" Type="ntext" />
+          <Property Name="small_image" Type="nvarchar" MaxLength="50" />
+          <Property Name="cost" Type="int" />
+          <Property Name="time" Type="time" />
+        </EntityType>
+        <EntityType Name="HairStyle_BigImage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="hairstyle_id" Type="int" />
+          <Property Name="big_image" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="HairStyle_Comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="hairstyle_id" Type="int" Nullable="false" />
+          <Property Name="comment_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="client" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="phone" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="description" Type="ntext" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="hairstyle_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_Comment">
+          <End Role="Comment" Type="MakeBeautyModel.Store.Comment" Multiplicity="1" />
+          <End Role="HairStyle_Comment" Type="MakeBeautyModel.Store.HairStyle_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HairStyle_Comment">
+              <PropertyRef Name="comment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HairStyle">
+          <End Role="HairStyle" Type="MakeBeautyModel.Store.HairStyle" Multiplicity="1" />
+          <End Role="HairStyle_Comment" Type="MakeBeautyModel.Store.HairStyle_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HairStyle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HairStyle_Comment">
+              <PropertyRef Name="hairstyle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HairStyle_BigImage">
+          <End Role="HairStyle" Type="MakeBeautyModel.Store.HairStyle" Multiplicity="0..1" />
+          <End Role="HairStyle_BigImage" Type="MakeBeautyModel.Store.HairStyle_BigImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HairStyle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HairStyle_BigImage">
+              <PropertyRef Name="hairstyle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HairStyle_Task">
+          <End Role="HairStyle" Type="MakeBeautyModel.Store.HairStyle" Multiplicity="0..1" />
+          <End Role="Task" Type="MakeBeautyModel.Store.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HairStyle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="hairstyle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MakeBeautyModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MakeBeautyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="MakeBeautyModel.Comment" />
+          <EntitySet Name="HairStyles" EntityType="MakeBeautyModel.HairStyle" />
+          <EntitySet Name="HairStyle_BigImage" EntityType="MakeBeautyModel.HairStyle_BigImage" />
+          <EntitySet Name="HairStyle_Comment" EntityType="MakeBeautyModel.HairStyle_Comment" />
+          <EntitySet Name="Tasks" EntityType="MakeBeautyModel.Task" />
+          <AssociationSet Name="FK_Comment" Association="MakeBeautyModel.FK_Comment">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="HairStyle_Comment" EntitySet="HairStyle_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HairStyle" Association="MakeBeautyModel.FK_HairStyle">
+            <End Role="HairStyle" EntitySet="HairStyles" />
+            <End Role="HairStyle_Comment" EntitySet="HairStyle_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HairStyle_BigImage" Association="MakeBeautyModel.FK_HairStyle_BigImage">
+            <End Role="HairStyle" EntitySet="HairStyles" />
+            <End Role="HairStyle_BigImage" EntitySet="HairStyle_BigImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HairStyle_Task" Association="MakeBeautyModel.FK_HairStyle_Task">
+            <End Role="HairStyle" EntitySet="HairStyles" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="author" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="message" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="HairStyle_Comment" Relationship="MakeBeautyModel.FK_Comment" FromRole="Comment" ToRole="HairStyle_Comment" />
+        </EntityType>
+        <EntityType Name="HairStyle">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="small_image" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="cost" Type="Int32" />
+          <Property Name="time" Type="Time" />
+          <NavigationProperty Name="HairStyle_Comment" Relationship="MakeBeautyModel.FK_HairStyle" FromRole="HairStyle" ToRole="HairStyle_Comment" />
+          <NavigationProperty Name="HairStyle_BigImage" Relationship="MakeBeautyModel.FK_HairStyle_BigImage" FromRole="HairStyle" ToRole="HairStyle_BigImage" />
+          <NavigationProperty Name="Tasks" Relationship="MakeBeautyModel.FK_HairStyle_Task" FromRole="HairStyle" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="HairStyle_BigImage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="hairstyle_id" Type="Int32" />
+          <Property Name="big_image" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="HairStyle" Relationship="MakeBeautyModel.FK_HairStyle_BigImage" FromRole="HairStyle_BigImage" ToRole="HairStyle" />
+        </EntityType>
+        <EntityType Name="HairStyle_Comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="hairstyle_id" Type="Int32" Nullable="false" />
+          <Property Name="comment_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comment" Relationship="MakeBeautyModel.FK_Comment" FromRole="HairStyle_Comment" ToRole="Comment" />
+          <NavigationProperty Name="HairStyle" Relationship="MakeBeautyModel.FK_HairStyle" FromRole="HairStyle_Comment" ToRole="HairStyle" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="client" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="date" Type="DateTime" />
+          <Property Name="hairstyle_id" Type="Int32" />
+          <NavigationProperty Name="HairStyle" Relationship="MakeBeautyModel.FK_HairStyle_Task" FromRole="Task" ToRole="HairStyle" />
+        </EntityType>
+        <Association Name="FK_Comment">
+          <End Role="Comment" Type="MakeBeautyModel.Comment" Multiplicity="1" />
+          <End Role="HairStyle_Comment" Type="MakeBeautyModel.HairStyle_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HairStyle_Comment">
+              <PropertyRef Name="comment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HairStyle">
+          <End Role="HairStyle" Type="MakeBeautyModel.HairStyle" Multiplicity="1" />
+          <End Role="HairStyle_Comment" Type="MakeBeautyModel.HairStyle_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HairStyle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HairStyle_Comment">
+              <PropertyRef Name="hairstyle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HairStyle_BigImage">
+          <End Role="HairStyle" Type="MakeBeautyModel.HairStyle" Multiplicity="0..1" />
+          <End Role="HairStyle_BigImage" Type="MakeBeautyModel.HairStyle_BigImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HairStyle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HairStyle_BigImage">
+              <PropertyRef Name="hairstyle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HairStyle_Task">
+          <End Role="HairStyle" Type="MakeBeautyModel.HairStyle" Multiplicity="0..1" />
+          <End Role="Task" Type="MakeBeautyModel.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HairStyle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="hairstyle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MakeBeautyModelStoreContainer" CdmEntityContainer="MakeBeautyEntities">
+          <EntitySetMapping Name="Comments"><EntityTypeMapping TypeName="MakeBeautyModel.Comment"><MappingFragment StoreEntitySet="Comment">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="author" ColumnName="author" />
+            <ScalarProperty Name="date" ColumnName="date" />
+            <ScalarProperty Name="message" ColumnName="message" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="HairStyles"><EntityTypeMapping TypeName="MakeBeautyModel.HairStyle"><MappingFragment StoreEntitySet="HairStyle">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="description" ColumnName="description" />
+            <ScalarProperty Name="small_image" ColumnName="small_image" />
+            <ScalarProperty Name="cost" ColumnName="cost" />
+            <ScalarProperty Name="time" ColumnName="time" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="HairStyle_BigImage"><EntityTypeMapping TypeName="MakeBeautyModel.HairStyle_BigImage"><MappingFragment StoreEntitySet="HairStyle_BigImage">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="hairstyle_id" ColumnName="hairstyle_id" />
+            <ScalarProperty Name="big_image" ColumnName="big_image" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="HairStyle_Comment"><EntityTypeMapping TypeName="MakeBeautyModel.HairStyle_Comment"><MappingFragment StoreEntitySet="HairStyle_Comment">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="hairstyle_id" ColumnName="hairstyle_id" />
+            <ScalarProperty Name="comment_id" ColumnName="comment_id" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Tasks"><EntityTypeMapping TypeName="MakeBeautyModel.Task"><MappingFragment StoreEntitySet="Task">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="client" ColumnName="client" />
+            <ScalarProperty Name="phone" ColumnName="phone" />
+            <ScalarProperty Name="description" ColumnName="description" />
+            <ScalarProperty Name="date" ColumnName="date" />
+            <ScalarProperty Name="hairstyle_id" ColumnName="hairstyle_id" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="MakeBeautyEntities">
+        <EntityTypeShape EntityType="MakeBeautyModel.Comment" Width="1.5" PointX="3.75" PointY="0.75" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="MakeBeautyModel.HairStyle" Width="1.5" PointX="0.75" PointY="5.375" Height="2.7494921875000005" IsExpanded="true" />
+        <EntityTypeShape EntityType="MakeBeautyModel.HairStyle_BigImage" Width="1.5" PointX="3" PointY="4.25" Height="1.7879850260416665" IsExpanded="true" />
+        <EntityTypeShape EntityType="MakeBeautyModel.HairStyle_Comment" Width="1.5" PointX="6" PointY="5.75" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="MakeBeautyModel.Task" Width="1.5" PointX="3" PointY="9.5" Height="2.3648893229166656" IsExpanded="true" />
+        <AssociationConnector Association="MakeBeautyModel.FK_Comment" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.90625" PointY="2.7302864583333335" />
+          <ConnectorPoint PointX="4.90625" PointY="6.9153857421875005" />
+          <ConnectorPoint PointX="6" PointY="6.9153857421875005" />
+        </AssociationConnector>
+        <AssociationConnector Association="MakeBeautyModel.FK_HairStyle" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="6.4454353841145835" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="6.4454353841145826" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="6.4454353841145835" />
+          <ConnectorPoint PointX="6" PointY="6.4454353841145835" />
+        </AssociationConnector>
+        <AssociationConnector Association="MakeBeautyModel.FK_HairStyle_BigImage" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="5.7064925130208337" />
+          <ConnectorPoint PointX="3" PointY="5.7064925130208337" />
+        </AssociationConnector>
+        <AssociationConnector Association="MakeBeautyModel.FK_HairStyle_Task" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.5" PointY="8.1244921875" />
+          <ConnectorPoint PointX="1.5" PointY="10.682444661458334" />
+          <ConnectorPoint PointX="3" PointY="10.682444661458334" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

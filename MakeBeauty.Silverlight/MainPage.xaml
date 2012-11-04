@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="MakeBeauty.Silverlight.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices"
+             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+             xmlns:Controls="clr-namespace:MakeBeauty.Silverlight.Controls"
+             xmlns:Web="clr-namespace:MakeBeauty.Services.Web;assembly=MakeBeauty.Services"
+             xmlns:Models1="clr-namespace:MakeBeauty.Services.Web.Models;assembly=MakeBeauty.Services">
+    <Grid x:Name="LayoutRoot" Background="White" Margin="50,10,50,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Button Click="OnCreateButtonClick" Grid.Row ="0" Content="Создать" Width="115" Height="24" Margin="0,4,0,4" HorizontalAlignment="Left"/>
+        <riaControls:DomainDataSource AutoLoad="True" 
+                                      d:DesignData="{d:DesignInstance Models1:TaskProxy, CreateList=true}" 
+                                      Height="0" 
+                                      LoadedData="OnDomainDataSourceLoadedData" 
+                                      Name="TaskDomainDataSource" QueryName="GetAllQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <Web:TaskDomainContext x:Name="TaskDomainContext"/>
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" 
+                                      d:DesignData="{d:DesignInstance Models1:HairStyleProxy, CreateList=true}" 
+                                      Height="0" 
+                                      LoadedData="OnDomainDataSourceLoadedData" 
+                                      Name="HairStyleDomainDataSource" QueryName="GetAllQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <Web:HairStyleDomainContext x:Name="HairStyleDomainContext"/>
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <sdk:DataGrid AutoGenerateColumns="False" Height="400" 
+                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                      Name="TaskDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" 
+                      VerticalAlignment="Top" 
+                      Grid.Row ="1"
+                      CellEditEnded="OnDataGridCellEditEnded">
+            <sdk:DataGrid.Columns>
+                <sdk:DataGridTextColumn Binding="{Binding Path=Id, Mode=OneWay}" Header="id" IsReadOnly="True" Width="0.4*"/>
+                <sdk:DataGridTextColumn Binding="{Binding Path=Client}" Header="Клиент" Width="1*" />
+                <sdk:DataGridTemplateColumn Header="Прическа" Width="1*" IsReadOnly="True">
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox Margin="1" 
+                                      Loaded="OnComboBoxLoaded"
+                                      DisplayMemberPath="Value"
+                                      SelectedValuePath="Key"
+                                      SelectedValue="{Binding Path=HairStyleId, Mode=TwoWay}">                                
+                            </ComboBox>
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>
+                </sdk:DataGridTemplateColumn>
+                <sdk:DataGridTemplateColumn Header="Дата" Width="1*">
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Date, StringFormat='dd.MM.yy hh:mm:ss'}"/>
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>
+                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <Controls:DateTimePicker DateTime="{Binding Path=Date, Mode=TwoWay}"
+                                                     HorizontalAlignment="Stretch"
+                                                     HorizontalContentAlignment="Stretch"/>
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                </sdk:DataGridTemplateColumn>
+                <sdk:DataGridTextColumn Binding="{Binding Path=Phone}" Header="Контактные данные" Width="1*" />
+                <sdk:DataGridTemplateColumn Header="Действия" Width="SizeToHeader">
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Удалить" Click="OnDeleteButtonClick" Margin="1"/>
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>                        
+                </sdk:DataGridTemplateColumn>
+            </sdk:DataGrid.Columns>
+        </sdk:DataGrid>
+        <TextBox Grid.Row="2" 
+                 x:Name="DescriptionTextBox"
+                 HorizontalAlignment="Stretch" 
+                 Height="100" 
+                 Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 DataContext="{Binding SelectedItem, ElementName=TaskDataGrid}"
+                 LostFocus="OnDescriptionTextBoxLostFocus"/>
+    </Grid>
+</UserControl>
