@@ -1,0 +1,109 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+    </title>
+    <link href="<%: Url.Content("~/Content/bootstrap.css") %>" rel="stylesheet" type="text/css" />
+    <link href="<%: Url.Content("~/Content/Site.css") %>" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/OnSilverlightError.js"></script>
+    <script type="text/javascript" src="../../Scripts/RemoveSomeeFooter.js"></script>
+    <script type="text/javascript" src="../../Scripts/Protection.js"></script>
+    <style type="text/css">
+        html, body
+        {
+            height: 100%;
+            overflow: auto;
+        }
+        body
+        {
+            padding: 0;
+            margin: 0;
+        }
+        #silverlightControlHost
+        {
+            height: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onload="OnLoad()">  
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar">
+                            </span>
+                        </button>
+                        <%: Html.ActionLink("Make beauty", "Index", "Home", new { @class = "brand"})%>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+                                <li><%: Html.ActionLink("Мои прически", "Index", "HairStyle") %></li>                              
+                                <li><%: Html.ActionLink("Оформить заказ", "Create", "Task") %></li>
+                                <li><%: Html.ActionLink("Обо мне", "About", "Home")%></li>
+                                <% if (Request.IsAuthenticated)
+                                   { %>
+                                <li><%: Html.ActionLink("Мои заказы", "Index", "Task") %></li>
+                                <li><%: Html.ActionLink("Выйти из режима администратора", "LogOff", "Home") %></li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+            <div class="span12">
+                <center>
+                    <img src="../../Images/Header.jpg" style="height: 200px;" />
+                </center>
+            </div>
+        </div>
+    <% if (ViewData.ContainsKey("Silverlight"))
+       { %>
+    <asp:ContentPlaceHolder ID="SilverlightPlaceHolder" runat="server" />
+    <% }
+       else
+       { %>
+    <div class="container">
+        <div class="row-fluid" id="main">
+            <div class="span8">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                <div id="footer">
+                </div>
+            </div>
+            <div class="span4">
+                <script type="text/javascript" src="http://userapi.com/js/api/openapi.js?52"></script>
+                <!-- VK Widget -->
+                <div id="vk_groups">
+                </div>
+                <script type="text/javascript">
+                    VK.Widgets.Group("vk_groups", { mode: 0, width: "300", height: "290" }, 37310676);
+                </script>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <script src="<%: Url.Content("~/Scripts/jquery.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap.min.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-typeahead.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-transition.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-carousel.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-alert.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-modal.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-dropdown.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-scrollspy.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-tab.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-tooltip.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-popover.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-button.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-collapse.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/bootstrap-affix.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/Silverlight.js") %>" type="text/javascript"></script>
+</body>
+</html>
