@@ -1,4 +1,4 @@
-**Sample of ASP.NET MVC application**
+**An example of ASP.NET MVC application**
 
 Website with hair styles catalog.
 
